@@ -3,7 +3,8 @@ FileVersion = 1
 [Project]
 Name = "cjson-beef"
 TargetType = "BeefLib"
-StartupObject = "cjson_beef.Program"
+StartupObject = "cjson.Program"
+DefaultNamespace = "cjson"
 
 [Configs.Debug.Win64]
 CLibType = "DynamicDebug"
