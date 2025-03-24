@@ -27,26 +27,27 @@ namespace cjson;
 
 public static class cjson
 {
+	typealias char = c_char;
+	typealias size_t = uint;
+
 	/* project version */
 	const c_int CJSON_VERSION_MAJOR 	= 1;
 	const c_int CJSON_VERSION_MINOR 	= 7;
 	const c_int CJSON_VERSION_PATCH 	= 18;
 
 	/* cJSON Types: */
-	const c_int cJSON_Invalid 		= (0);
-	const c_int cJSON_False  		= (1 << 0);
-	const c_int cJSON_True   		= (1 << 1);
-	const c_int cJSON_NULL   		= (1 << 2);
-	const c_int cJSON_Number 		= (1 << 3);
-	const c_int cJSON_String 		= (1 << 4);
-	const c_int cJSON_Array  		= (1 << 5);
-	const c_int cJSON_Object 		= (1 << 6);
-	const c_int cJSON_Raw    		= (1 << 7); /* raw json */
+	const c_int cJSON_Invalid 		= 0;
+	const c_int cJSON_False  		= 1 << 0;
+	const c_int cJSON_True   		= 1 << 1;
+	const c_int cJSON_NULL   		= 1 << 2;
+	const c_int cJSON_Number 		= 1 << 3;
+	const c_int cJSON_String 		= 1 << 4;
+	const c_int cJSON_Array  		= 1 << 5;
+	const c_int cJSON_Object 		= 1 << 6;
+	const c_int cJSON_Raw    		= 1 << 7; /* raw json */
 
 	const c_int cJSON_IsReference 		= 256;
 	const c_int cJSON_StringIsConst 	= 512;
-
-	typealias size_t = uint;
 
 	/* The cJSON structure: */
 	[CRepr]
@@ -62,14 +63,14 @@ public static class cjson
 		public c_int type;
 
 		/* The item's string, if type==cJSON_String  and type == cJSON_Raw */
-		public c_char* valuestring;
+		public char* valuestring;
 		/* writing to valueint is DEPRECATED, use cJSON_SetNumberValue instead */
 		public c_int valueint;
 		/* The item's number, if type==cJSON_Number */
 		public double valuedouble;
 
 		/* The item's name string, if this item is the child of, or is in the list of subitems of an object. */
-		public c_char* string;
+		public char* string;
 	}
 
 	[CRepr]
@@ -83,29 +84,29 @@ public static class cjson
 	typealias cJSON_bool = c_int;
 
 	/* returns the version of cJSON as a string */
-	[CLink] public static extern  c_char cJSON_Version(void);
+	[CLink] public static extern  char cJSON_Version();
 
 	/* Supply malloc, realloc and free functions to cJSON */
 	[CLink] public static extern void cJSON_InitHooks(cJSON_Hooks* hooks);
 
 	/* Memory Management: the caller is always responsible to free the results from all variants of cJSON_Parse (with cJSON_Delete) and cJSON_Print (with stdlib free, cJSON_Hooks.free_fn, or cJSON_free as appropriate). The exception is cJSON_PrintPreallocated, where the caller has full responsibility of the buffer. */
 	/* Supply a block of JSON, and this returns a cJSON object you can interrogate. */
-	[CLink] public static extern cJSON* cJSON_Parse(c_char* value);
-	[CLink] public static extern cJSON* cJSON_ParseWithLength(c_char* value, size_t buffer_length);
+	[CLink] public static extern cJSON* cJSON_Parse(char* value);
+	[CLink] public static extern cJSON* cJSON_ParseWithLength(char* value, size_t buffer_length);
 	/* ParseWithOpts allows you to require (and check) that the JSON is null terminated, and to retrieve the pointer to the final byte parsed. */
 	/* If you supply a ptr in return_parse_end and parsing fails, then return_parse_end will contain a pointer to the error so will match cJSON_GetErrorPtr(). */
-	[CLink] public static extern cJSON* cJSON_ParseWithOpts(c_char* value, c_char** return_parse_end, cJSON_bool require_null_terminated);
-	[CLink] public static extern cJSON* cJSON_ParseWithLengthOpts(c_char* value, size_t buffer_length, c_char** return_parse_end, cJSON_bool require_null_terminated);
+	[CLink] public static extern cJSON* cJSON_ParseWithOpts(char* value, char** return_parse_end, cJSON_bool require_null_terminated);
+	[CLink] public static extern cJSON* cJSON_ParseWithLengthOpts(char* value, size_t buffer_length, char** return_parse_end, cJSON_bool require_null_terminated);
 
 	/* Render a cJSON entity to text for transfer/storage. */
-	[CLink] public static extern c_char* cJSON_Print(cJSON* item);
+	[CLink] public static extern char* cJSON_Print(cJSON* item);
 	/* Render a cJSON entity to text for transfer/storage without any formatting. */
-	[CLink] public static extern c_char* cJSON_PrintUnformatted(cJSON* item);
+	[CLink] public static extern char* cJSON_PrintUnformatted(cJSON* item);
 	/* Render a cJSON entity to text using a buffered strategy. prebuffer is a guess at the final size. guessing well reduces reallocation. fmt=0 gives unformatted, =1 gives formatted */
-	[CLink] public static extern c_char* cJSON_PrintBuffered(cJSON* item, c_int prebuffer, cJSON_bool fmt);
+	[CLink] public static extern char* cJSON_PrintBuffered(cJSON* item, c_int prebuffer, cJSON_bool fmt);
 	/* Render a cJSON entity to text using a buffer already allocated in memory with given length. Returns 1 on success and 0 on failure. */
 	/* NOTE: cJSON is not always 100% accurate in estimating how much memory it will use, so to be safe allocate 5 bytes more than you actually need */
-	[CLink] public static extern cJSON_bool cJSON_PrintPreallocated(cJSON* item, c_char* buffer, c_int length, cJSON_bool format);
+	[CLink] public static extern cJSON_bool cJSON_PrintPreallocated(cJSON* item, char* buffer, c_int length, cJSON_bool format);
 	/* Delete a cJSON entity and all subentities. */
 	[CLink] public static extern void cJSON_Delete(cJSON* item);
 
@@ -114,14 +115,14 @@ public static class cjson
 	/* Retrieve item number "index" from array "array". Returns NULL if unsuccessful. */
 	[CLink] public static extern cJSON* cJSON_GetArrayItem(cJSON* array, c_int index);
 	/* Get item "string" from object. Case insensitive. */
-	[CLink] public static extern cJSON* cJSON_GetObjectItem(cJSON* object, c_char* string);
-	[CLink] public static extern cJSON* cJSON_GetObjectItemCaseSensitive(cJSON* object, c_char*  string);
-	[CLink] public static extern cJSON_bool cJSON_HasObjectItem(cJSON* object, c_char* string);
+	[CLink] public static extern cJSON* cJSON_GetObjectItem(cJSON* object, char* string);
+	[CLink] public static extern cJSON* cJSON_GetObjectItemCaseSensitive(cJSON* object, char*  string);
+	[CLink] public static extern cJSON_bool cJSON_HasObjectItem(cJSON* object, char* string);
 	/* For analysing failed parses. This returns a pointer to the parse error. You'll probably need to look a few chars back to make sense of it. Defined when cJSON_Parse() returns 0. 0 when cJSON_Parse() succeeds. */
-	[CLink] public static extern  c_char cJSON_GetErrorPtr(void);
+	[CLink] public static extern  char cJSON_GetErrorPtr();
 
 	/* Check item type and return its value */
-	[CLink] public static extern c_char cJSON_GetStringValue(cJSON* item);
+	[CLink] public static extern char cJSON_GetStringValue(cJSON* item);
 	[CLink] public static extern double cJSON_GetNumberValue(cJSON* item);
 
 	/* These functions check the type of an item */
@@ -137,20 +138,20 @@ public static class cjson
 	[CLink] public static extern cJSON_bool cJSON_IsRaw(cJSON* item);
 
 	/* These calls create a cJSON item of the appropriate type. */
-	[CLink] public static extern cJSON* cJSON_CreateNull(void);
-	[CLink] public static extern cJSON* cJSON_CreateTrue(void);
-	[CLink] public static extern cJSON* cJSON_CreateFalse(void);
+	[CLink] public static extern cJSON* cJSON_CreateNull();
+	[CLink] public static extern cJSON* cJSON_CreateTrue();
+	[CLink] public static extern cJSON* cJSON_CreateFalse();
 	[CLink] public static extern cJSON* cJSON_CreateBool(cJSON_bool boolean);
 	[CLink] public static extern cJSON* cJSON_CreateNumber(double num);
-	[CLink] public static extern cJSON* cJSON_CreateString(c_char* string);
+	[CLink] public static extern cJSON* cJSON_CreateString(char* string);
 	/* raw json */
-	[CLink] public static extern cJSON* cJSON_CreateRaw(c_char* raw);
-	[CLink] public static extern cJSON* cJSON_CreateArray(void);
-	[CLink] public static extern cJSON* cJSON_CreateObject(void);
+	[CLink] public static extern cJSON* cJSON_CreateRaw(char* raw);
+	[CLink] public static extern cJSON* cJSON_CreateArray();
+	[CLink] public static extern cJSON* cJSON_CreateObject();
 
 	/* Create a string where valuestring references a string so
 	* it will not be freed by cJSON_Delete */
-	[CLink] public static extern cJSON* cJSON_CreateStringReference(c_char* string);
+	[CLink] public static extern cJSON* cJSON_CreateStringReference(char* string);
 	/* Create an object/array that only references it's elements so
 	* they will not be freed by cJSON_Delete */
 	[CLink] public static extern cJSON* cJSON_CreateObjectReference(cJSON* child);
@@ -161,34 +162,34 @@ public static class cjson
 	[CLink] public static extern cJSON* cJSON_CreateIntArray(int* numbers, c_int count);
 	[CLink] public static extern cJSON* cJSON_CreateFloatArray(float* numbers, c_int count);
 	[CLink] public static extern cJSON* cJSON_CreateDoubleArray(double* numbers, c_int count);
-	[CLink] public static extern cJSON* cJSON_CreateStringArray(c_char** strings, c_int count);
+	[CLink] public static extern cJSON* cJSON_CreateStringArray(char** strings, c_int count);
 
 	/* Append item to the specified array/object. */
 	[CLink] public static extern cJSON_bool cJSON_AddItemToArray(cJSON* array, cJSON* item);
-	[CLink] public static extern cJSON_bool cJSON_AddItemToObject(cJSON* object, c_char* string, cJSON* item);
+	[CLink] public static extern cJSON_bool cJSON_AddItemToObject(cJSON* object, char* string, cJSON* item);
 	/* Use this when string is definitely  (i.e. a literal, or as good as), and will definitely survive the cJSON object.
 	* WARNING: When this function was used, make sure to always check that (item->type & cJSON_StringIs) is zero before
 	* writing to `item->string` */
-	[CLink] public static extern cJSON_bool cJSON_AddItemToObjectCS(cJSON* object, c_char* string, cJSON* item);
+	[CLink] public static extern cJSON_bool cJSON_AddItemToObjectCS(cJSON* object, char* string, cJSON* item);
 	/* Append reference to item to the specified array/object. Use this when you want to add an existing cJSON to a new cJSON, but don't want to corrupt your existing cJSON. */
 	[CLink] public static extern cJSON_bool cJSON_AddItemReferenceToArray(cJSON* array, cJSON* item);
-	[CLink] public static extern cJSON_bool cJSON_AddItemReferenceToObject(cJSON* object, c_char* string, cJSON* item);
+	[CLink] public static extern cJSON_bool cJSON_AddItemReferenceToObject(cJSON* object, char* string, cJSON* item);
 
 	/* Remove/Detach items from Arrays/Objects. */
 	[CLink] public static extern cJSON* cJSON_DetachItemViaPointer(cJSON* parent, cJSON*  item);
 	[CLink] public static extern cJSON* cJSON_DetachItemFromArray(cJSON* array, c_int which);
 	[CLink] public static extern void cJSON_DeleteItemFromArray(cJSON* array, c_int which);
-	[CLink] public static extern cJSON* cJSON_DetachItemFromObject(cJSON* object, c_char* string);
-	[CLink] public static extern cJSON* cJSON_DetachItemFromObjectCaseSensitive(cJSON* object, c_char* string);
-	[CLink] public static extern void cJSON_DeleteItemFromObject(cJSON* object, c_char* string);
-	[CLink] public static extern void cJSON_DeleteItemFromObjectCaseSensitive(cJSON* object, c_char* string);
+	[CLink] public static extern cJSON* cJSON_DetachItemFromObject(cJSON* object, char* string);
+	[CLink] public static extern cJSON* cJSON_DetachItemFromObjectCaseSensitive(cJSON* object, char* string);
+	[CLink] public static extern void cJSON_DeleteItemFromObject(cJSON* object, char* string);
+	[CLink] public static extern void cJSON_DeleteItemFromObjectCaseSensitive(cJSON* object, char* string);
 
 	/* Update array items. */
 	[CLink] public static extern cJSON_bool cJSON_InsertItemInArray(cJSON* array, c_int which, cJSON* newitem); /* Shifts pre-existing items to the right. */
 	[CLink] public static extern cJSON_bool cJSON_ReplaceItemViaPointer(cJSON* parent, cJSON* item, cJSON* replacement);
 	[CLink] public static extern cJSON_bool cJSON_ReplaceItemInArray(cJSON* array, c_int which, cJSON* newitem);
-	[CLink] public static extern cJSON_bool cJSON_ReplaceItemInObject(cJSON* object, c_char* string, cJSON* newitem);
-	[CLink] public static extern cJSON_bool cJSON_ReplaceItemInObjectCaseSensitive(cJSON* object, c_char* string, cJSON* newitem);
+	[CLink] public static extern cJSON_bool cJSON_ReplaceItemInObject(cJSON* object, char* string, cJSON* newitem);
+	[CLink] public static extern cJSON_bool cJSON_ReplaceItemInObjectCaseSensitive(cJSON* object, char* string, cJSON* newitem);
 
 	/* Duplicate a cJSON item */
 	[CLink] public static extern cJSON* cJSON_Duplicate(cJSON* item, cJSON_bool recurse);
@@ -202,19 +203,19 @@ public static class cjson
 	/* Minify a strings, remove blank characters(such as ' ', '\t', '\r', '\n') from strings.
 	* The input pointer json cannot point to a read-only address area, such as a string ant, 
 	* but should point to a readable and writable address area. */
-	[CLink] public static extern void cJSON_Minify(c_char* json);
+	[CLink] public static extern void cJSON_Minify(char* json);
 
 	/* Helper functions for creating and adding items to an object at the same time.
 	* They return the added item or NULL on failure. */
-	[CLink] public static extern cJSON* cJSON_AddNullToObject(cJSON* object, c_char* name);
-	[CLink] public static extern cJSON* cJSON_AddTrueToObject(cJSON* object, c_char* name);
-	[CLink] public static extern cJSON* cJSON_AddFalseToObject(cJSON* object, c_char* name);
-	[CLink] public static extern cJSON* cJSON_AddBoolToObject(cJSON* object, c_char* name, cJSON_bool boolean);
-	[CLink] public static extern cJSON* cJSON_AddNumberToObject(cJSON* object, c_char* name, double number);
-	[CLink] public static extern cJSON* cJSON_AddStringToObject(cJSON* object, c_char* name, c_char* string);
-	[CLink] public static extern cJSON* cJSON_AddRawToObject(cJSON* object, c_char* name, c_char* raw);
-	[CLink] public static extern cJSON* cJSON_AddObjectToObject(cJSON* object, c_char* name);
-	[CLink] public static extern cJSON* cJSON_AddArrayToObject(cJSON* object, c_char* name);
+	[CLink] public static extern cJSON* cJSON_AddNullToObject(cJSON* object, char* name);
+	[CLink] public static extern cJSON* cJSON_AddTrueToObject(cJSON* object, char* name);
+	[CLink] public static extern cJSON* cJSON_AddFalseToObject(cJSON* object, char* name);
+	[CLink] public static extern cJSON* cJSON_AddBoolToObject(cJSON* object, char* name, cJSON_bool boolean);
+	[CLink] public static extern cJSON* cJSON_AddNumberToObject(cJSON* object, char* name, double number);
+	[CLink] public static extern cJSON* cJSON_AddStringToObject(cJSON* object, char* name, char* string);
+	[CLink] public static extern cJSON* cJSON_AddRawToObject(cJSON* object, char* name, char* raw);
+	[CLink] public static extern cJSON* cJSON_AddObjectToObject(cJSON* object, char* name);
+	[CLink] public static extern cJSON* cJSON_AddArrayToObject(cJSON* object, char* name);
 
 	/* When assigning an integer value, it needs to be propagated to valuedouble too. */
 	//#define cJSON_SetIntValue(object, number) ((object) ? (object)->valueint = (object)->valuedouble = (number) : (number))
@@ -222,7 +223,7 @@ public static class cjson
 	[CLink] public static extern double cJSON_SetNumberHelper(cJSON* object, double number);
 	//#define cJSON_SetNumberValue(object, number) ((object != NULL) ? cJSON_SetNumberHelper(object, (double)number) : (number))
 	/* Change the valuestring of a cJSON_String object, only takes effect when type of object is cJSON_String */
-	[CLink] public static extern c_char cJSON_SetValuestring(cJSON* object, c_char* valuestring);
+	[CLink] public static extern char cJSON_SetValuestring(cJSON* object, char* valuestring);
 
 	// /* If the object is not a boolean type this does nothing and returns cJSON_Invalid else it returns the new type*/
 	// #define cJSON_SetBoolValue(object, boolValue) ( \

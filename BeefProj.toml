@@ -8,4 +8,7 @@ DefaultNamespace = "cjson"
 
 [Configs.Debug.Win64]
 CLibType = "DynamicDebug"
-LibPaths = ["$(ProjectDir)\\libs\\cjson-windows.lib"]
+LibPaths = ["$(ProjectDir)\\libs\\windows\\cjsond.lib"]
+
+[Configs.Release.Win64]
+LibPaths = ["$(ProjectDir)\\libs\\windows\\cjson.lib"]
