@@ -1,13 +1,9 @@
 {
-  "name": "cgltf-beef",
+  "name": "cjson-beef",
   "scripts": {
-    "build": "xbuild"
+    "build": "cmake-ts-gen"
   },
   "devDependencies": {
-    "@types/bun": "latest",
-    "cmake-ts-gen": "link:cmake-ts-gen"
-  },
-  "peerDependencies": {
-    "typescript": "^5"
+    "cmake-ts-gen": "0.2.0"
   }
 }

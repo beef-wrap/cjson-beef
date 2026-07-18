@@ -1,0 +1,17 @@
+.{
+    .name = .cjson_beef,
+    .version = "0.0.0",
+    .fingerprint = 0xa4e32dbc0974e0b6,
+    .minimum_zig_version = "0.16.0",
+    .dependencies = .{
+        .upstream = .{
+            .url = "git+https://github.com/DaveGamble/cJSON#12c4bf1986c288950a3d06da757109a6aa1ece38",
+            .hash = "N-V-__8AALmBEwBhUxu0-i57oc8R2jUfG-PBSQbskT88Bq4X",
+        },
+    },
+    .paths = .{
+        "build.zig",
+        "build.zig.zon",
+        "src",
+    },
+}

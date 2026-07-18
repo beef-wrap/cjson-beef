@@ -7,7 +7,46 @@ StartupObject = "cjson.Program"
 DefaultNamespace = "cjson"
 
 [Configs.Debug.Win64]
-LibPaths = ["$(ProjectDir)\\libs\\windows\\x64\\cjson_d.lib"]
+LibPaths = ["$(ProjectDir)\\libs\\x86_64-windows-msvc\\cjson_d.lib", "$(ProjectDir)\\libs\\x86_64-windows-msvc\\cjson_utils_d.lib"]
+
+[Configs.Debug.aarch64-windows-gnu]
+LibPaths = ["$(ProjectDir)\\libs\\x86_64-windows-gnu\\cjson_d.lib", "$(ProjectDir)\\libs\\x86_64-windows-gnu\\cjson_utils_d.lib"]
+
+[Configs.Debug.Linux64]
+LibPaths = ["$(ProjectDir)\\libs\\x86_64-linux-musl\\libcjson_d.a", "$(ProjectDir)\\libs\\x86_64-linux-musl\\libcjson_utils_d.a"]
+
+[Configs.Debug.aarch64-linux-gnu]
+LibPaths = ["$(ProjectDir)\\libs\\aarch64-linux-gnu\\libcjson_d.a", "$(ProjectDir)\\libs\\aarch64-linux-gnu\\libcjson_utils_d.a"]
+
+[Configs.Debug.macOS]
+LibPaths = ["$(ProjectDir)\\libs\\aarch64-macos\\libcjson_d.a", "$(ProjectDir)\\libs\\aarch64-macos\\libcjson_utils_d.a"]
 
 [Configs.Release.Win64]
-LibPaths = ["$(ProjectDir)\\libs\\windows\\x64\\cjson.lib"]
+LibPaths = ["$(ProjectDir)\\libs\\x86_64-windows-msvc\\cjson.lib", "$(ProjectDir)\\libs\\x86_64-windows-msvc\\cjson_utils.lib"]
+
+[Configs.Release.aarch64-windows-gnu]
+LibPaths = ["$(ProjectDir)\\libs\\x86_64-windows-gnu\\cjson.lib", "$(ProjectDir)\\libs\\x86_64-windows-gnu\\cjson_utils.lib"]
+
+[Configs.Release.Linux64]
+LibPaths = ["$(ProjectDir)\\libs\\x86_64-linux-musl\\libcjson.a", "$(ProjectDir)\\libs\\x86_64-linux-musl\\libcjson_utils.a"]
+
+[Configs.Release.aarch64-linux-gnu]
+LibPaths = ["$(ProjectDir)\\libs\\aarch64-linux-gnu\\libcjson.a", "$(ProjectDir)\\libs\\aarch64-linux-gnu\\libcjson_utils.a"]
+
+[Configs.Release.macOS]
+LibPaths = ["$(ProjectDir)\\libs\\aarch64-macos\\libcjson.a", "$(ProjectDir)\\libs\\aarch64-macos\\libcjson_utils.a"]
+
+[Configs.Test.Win64]
+LibPaths = ["$(ProjectDir)\\libs\\x86_64-windows-msvc\\cjson_d.lib", "$(ProjectDir)\\libs\\x86_64-windows-msvc\\cjson_utils_d.lib"]
+
+[Configs.Test.aarch64-windows-gnu]
+LibPaths = ["$(ProjectDir)\\libs\\x86_64-windows-gnu\\cjson_d.lib", "$(ProjectDir)\\libs\\x86_64-windows-gnu\\cjson_utils_d.lib"]
+
+[Configs.Test.Linux64]
+LibPaths = ["$(ProjectDir)\\libs\\x86_64-linux-musl\\libcjson_d.a", "$(ProjectDir)\\libs\\x86_64-linux-musl\\libcjson_utils_d.a"]
+
+[Configs.Test.aarch64-linux-gnu]
+LibPaths = ["$(ProjectDir)\\libs\\aarch64-linux-gnu\\libcjson_d.a", "$(ProjectDir)\\libs\\aarch64-linux-gnu\\libcjson_utils_d.a"]
+
+[Configs.Test.macOS]
+LibPaths = ["$(ProjectDir)\\libs\\aarch64-macos\\libcjson_d.a", "$(ProjectDir)\\libs\\aarch64-macos\\libcjson_utils_d.a"]

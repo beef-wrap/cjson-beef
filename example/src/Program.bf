@@ -34,7 +34,7 @@ static class Program
 
 		if (cJSON_IsString(name) != 0 && (name.valuestring != null))
 		{
-			Debug.WriteLine($"Checking monitor {name.valuestring}\n");
+			Debug.WriteLine($"Checking monitor {scope StringView(name.valuestring)}\n");
 		}
 
 		let resolutions = cJSON_GetObjectItemCaseSensitive(monitor_json, "resolutions");
