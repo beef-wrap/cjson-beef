@@ -22,7 +22,6 @@ fn lib(
     target: std.Target.Query,
     optimize: std.builtin.OptimizeMode,
     name: []const u8,
-    name_debug: []const u8,
     macros: []const struct { []const u8, []const u8 },
     includes: []const std.Build.LazyPath,
     files: []const struct { std.Build.LazyPath, []const []const u8 },
@@ -55,8 +54,13 @@ fn lib(
         });
     }
 
+    const library_name = switch (optimize) {
+        .Debug => try std.fmt.allocPrint(b.allocator, "{s}_d", .{name}),
+        else => name,
+    };
+
     const library = b.addLibrary(.{
-        .name = if (optimize == .Debug) name_debug else name,
+        .name = library_name,
         .linkage = .static,
         .root_module = module,
     });
@@ -86,7 +90,6 @@ pub fn build(b: *std.Build) !void {
                 t,
                 o,
                 "cjson",
-                "cjson_d",
                 &.{},
                 &.{upstream.path("")},
                 &.{
@@ -105,7 +108,6 @@ pub fn build(b: *std.Build) !void {
                 t,
                 o,
                 "cjson_utils",
-                "cjson_utils_d",
                 &.{},
                 &.{upstream.path("")},
                 &.{
