@@ -1,9 +1,0 @@
-{
-  "name": "cjson-beef",
-  "scripts": {
-    "build": "cmake-ts-gen"
-  },
-  "devDependencies": {
-    "cmake-ts-gen": "0.2.0"
-  }
-}
